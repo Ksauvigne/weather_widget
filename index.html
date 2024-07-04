@@ -28,6 +28,32 @@
         <p>Wind Speed: <span id="wind_speed"></span> km/h</p>
     </div>
 
-    <script src="weather.js"></script>
+    <script>
+        const apiKey = '9a2eb385615a34b7f2e7a7ee3eebdd80'; // Your actual Weatherstack API key
+        const city = 'Miami';
+
+        async function getWeather() {
+            try {
+                const response = await fetch(`http://api.weatherstack.com/current?access_key=${apiKey}&query=${city}`);
+                const data = await response.json();
+                
+                console.log(data); // Log the entire response for debugging
+
+                if (data.error) {
+                    console.error('Error fetching weather data:', data.error.info);
+                    return;
+                }
+
+                document.getElementById('description').innerText = data.current.weather_descriptions[0];
+                document.getElementById('temperature').innerText = data.current.temperature;
+                document.getElementById('humidity').innerText = data.current.humidity;
+                document.getElementById('wind_speed').innerText = data.current.wind_speed;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        getWeather();
+    </script>
 </body>
 </html>
